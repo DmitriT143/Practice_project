@@ -1,0 +1,19 @@
+Roller in discord with dice rolls in following format
+
+[amount of dice] + [type of dice(any)] + {repeat if necessary}
+
+additions maybe debatable, but i'll add a small feature for [GAME IN PROCESS]
+
+Roller outside of discord (app)
+
+Done on PyQT5 with same
+maybe make something like presets I don't know
+################################################################
+[amount] + [type] + [repeat] + [fixed amount] =>   [result]    #
+[amount] + [type] + [repeat] + [fixed amount] =>   [result]    #
+[amount] + [type] + [repeat] + [fixed amount] =>   [result]    #
+################################################################
+with saved 10 last results
+maybe make it save those results to text file
+with time before them to add up
+or maybe make them swap... dunno it seems kinda hard
