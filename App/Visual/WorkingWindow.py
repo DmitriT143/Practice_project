@@ -1,29 +1,39 @@
+import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+class RollerWindow(object):
+    def __init__(self):
+        super(RollerWindow, self).__init__()
         MainWindow.setObjectName("MainWindow")
+
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
+
         self.InputWidget = QtWidgets.QWidget(self.centralwidget)
         self.InputWidget.setObjectName("InputWidget")
-        self.gridLayout_5 = QtWidgets.QGridLayout(self.InputWidget)
-        self.gridLayout_5.setObjectName("gridLayout_5")
+
+        self.InputLayout = QtWidgets.QGridLayout(self.InputWidget)
+        self.InputLayout.setObjectName("InputLayout")
+
         self.RollInputLine = QtWidgets.QLineEdit(self.InputWidget)
         self.RollInputLine.setObjectName("RollInputLine")
-        self.gridLayout_5.addWidget(self.RollInputLine, 0, 0, 1, 1)
+        self.InputLayout.addWidget(self.RollInputLine, 0, 0, 1, 1)
+
         self.RollButton = QtWidgets.QPushButton(self.InputWidget)
         self.RollButton.setObjectName("RollButton")
-        self.gridLayout_5.addWidget(self.RollButton, 0, 1, 1, 1)
+        self.InputLayout.addWidget(self.RollButton, 0, 1, 1, 1)
         self.gridLayout.addWidget(self.InputWidget, 0, 0, 1, 1)
+
         self.scrollArea = QtWidgets.QScrollArea(self.centralwidget)
         self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setObjectName("scrollArea")
+        self.scrollArea.setObjectName("HistoryArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setObjectName("HistoryAreaWidgetContents")
+
         self.gridLayout_2 = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.pushButton_3 = QtWidgets.QPushButton(self.scrollAreaWidgetContents)
@@ -67,11 +77,9 @@ class Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "ReRoll"))
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+app = QtWidgets.QApplication(sys.argv)
+MainWindow = QtWidgets.QMainWindow()
+ui = RollerWindow()
+ui.__init__()
+MainWindow.show()
+sys.exit(app.exec_())

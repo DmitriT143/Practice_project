@@ -1,5 +1,8 @@
 import random
 
+def Reroll(formula):
+    se
+
 
 def initial_roll(ammount, max_value):
     def dice_roll(max_value):
