@@ -1,5 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+from App.Working.Functions import prepare_input_line, initial_roll
 
 
 class RollerWindow(object):
@@ -66,8 +67,18 @@ class RollerWindow(object):
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
+        self.RollButton.clicked.connect(lambda: self.roll())
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def roll(self):
+        print('Clicity Clakity')
+        input = str(self.RollInputLine.text())
+        prepare_input_line(input)
+#        initial_roll(1,10)  # ToDo: make it take input from input line
+#        self.RollInputLine.setText('')  # Todo: It MAY export default roll like 12d8+5
+        return
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -75,6 +86,7 @@ class RollerWindow(object):
         self.RollButton.setText(_translate("MainWindow", "Make Roll"))
         self.pushButton.setText(_translate("MainWindow", "ReRoll"))
         self.pushButton_3.setText(_translate("MainWindow", "ReRoll"))
+        self.RollInputLine.setText('4d6+12')
 
 
 app = QtWidgets.QApplication(sys.argv)
