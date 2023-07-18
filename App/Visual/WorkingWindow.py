@@ -1,6 +1,6 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from App.Working.Functions import prepare_input_line, initial_roll
+from App.Working.Functions import input_to_response
 
 
 class RollerWindow(object):
@@ -72,13 +72,20 @@ class RollerWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
+    def roll_add(self, added_roll, added_result):
+        read_history = open("roll_history.txt", "r")
+        print(added_roll, added_result)
+        print(read_history)
+        saved_history = read_history.read()
+        add_history = open("roll_history.txt", "w")
+        add_history.write(f'{added_result}' f', {added_roll}' f', {saved_history}')
+        print(saved_history)
+
     def roll(self):
-        print('Clicity Clakity')
         input = str(self.RollInputLine.text())
-        prepare_input_line(input)
-#        initial_roll(1,10)  # ToDo: make it take input from input line
-#        self.RollInputLine.setText('')  # Todo: It MAY export default roll like 12d8+5
-        return
+        response = input_to_response(input)
+        self.roll_add(response[0], response[1])
+        self.RollInputLine.setText('')
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
