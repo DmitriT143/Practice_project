@@ -9,31 +9,56 @@ def input_to_response(line):
             dice_result = dice_result + dice
         return dice_result
 
-    def input_roll(line):
-        modifier = 0
-        kept_result = 0
-        line = line.split('+')
-        for i in range(len(line)):
-            sub_line = line[i]
-            t = len(sub_line)
-            Dice_Flag = 0
-            for d in range(t):
-                if str(sub_line[d]) == 'd':
-                    subb_line = sub_line.split('d')
-                    Dice_Flag = 1
-                    if str(subb_line[1]) == '':
-                        modifier = modifier + int(subb_line[0])
-                    else:
-                        dice_result = initial_roll(subb_line[0], subb_line[1])
-                        print(dice_result)
-                        kept_result = dice_result + kept_result
-                    pass
-                elif d == t - 1 and Dice_Flag == 0:
-                    modifier = modifier + int(sub_line)
-        print(modifier)
-        result = modifier + kept_result
-        print(result)
-        return result
+    def input_roll(to_output):
+        Prev_function = 0
+        Function_output = 0
+        pre_dice_number = 0
+        post_dice_number = 0
+        next_in_line = 0
+        Flag_operation = 1
+        Flag_dice_roll = 0
+        for i in range(len(to_output)):
+            if str(to_output[i]).isdigit():
+                Flag_operation = 0
+                if pre_dice_number == 0:
+                    pre_dice_number = str(to_output[i])
+                else:
+                    pre_dice_number = str(pre_dice_number) + str(to_output[i])
+                print(pre_dice_number)
+            if Flag_dice_roll == 0 and str(to_output[i]) == 'd':
+                Flag_dice_roll = 1
+                Flag_operation = 1
+                if pre_dice_number == 0:
+                    pre_dice_number = 1
+                post_dice_number = pre_dice_number
+                pre_dice_number = 0
+            if Flag_operation == 0 and str(to_output[i]) == '+' or Flag_operation == 0 and str(to_output[i]) == '-':
+                if Flag_dice_roll == 1:
+                    next_in_line = initial_roll(post_dice_number, pre_dice_number)
+                pre_dice_number = 0
+                if Prev_function == 0:
+                    Function_output = Function_output + next_in_line
+                if Prev_function == 1:
+                    Function_output = Function_output + next_in_line
+                if Prev_function == 2:
+                    Function_output = Function_output - next_in_line
+                Flag_operation = 1
+                Flag_dice_roll = 0
+                next_in_line = 0
+                if str(to_output[i]) == '-':
+                    Prev_function = 2
+                if str(to_output[i]) == '+':
+                    Prev_function = 1
+            if i == len(to_output) - 1:
+                if Flag_dice_roll == 1:
+                    next_in_line = initial_roll(post_dice_number, pre_dice_number)
+                if Prev_function == 0:
+                    Function_output = Function_output + next_in_line
+                if Prev_function == 1:
+                    Function_output = Function_output + next_in_line
+                if Prev_function == 2:
+                    Function_output = Function_output - next_in_line
+        return Function_output
 
     def roll_again(formula):
         print(formula)
@@ -74,12 +99,12 @@ def input_to_response(line):
         print(line)
         return line
 
-#    def rolls_history():
-#        read_history = open("roll_history.txt", "r")
-#        saved_history = read_history.read()
-#        saved_history = saved_history.split(',')
-#        print(saved_history)  # ToDo How to write it to output
-#
+    #    def rolls_history():
+    #        read_history = open("roll_history.txt", "r")
+    #        saved_history = read_history.read()
+    #        saved_history = saved_history.split(',')
+    #        print(saved_history)
+    #
     def roll_add(added_roll, added_result):
         read_history = open("roll_history.txt", "r")
         print(added_roll, added_result)
@@ -92,4 +117,3 @@ def input_to_response(line):
     correct_formula = prepare_input_line(line)
     output = input_roll(correct_formula)
     return correct_formula, output
-
