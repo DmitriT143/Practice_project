@@ -50,11 +50,13 @@ class RollerWindow(object):
         self.gridLayout_2.addWidget(self.pushButton, 0, 2, 1, 1)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.scrollArea, 1, 0, 1, 1)
+
         for i in range(10):
             self.create_ten_reroll_positions(i)
+            self.OutputRerollButton.clicked.connect(lambda ch, num=i: self.reroll(num))
         MainWindow.setCentralWidget(self.centralwidget)
 
-        self.RollButton.clicked.connect(lambda: self.roll())
+        self.RollButton.clicked.connect(lambda: self.roll('roll',0))
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -65,11 +67,10 @@ class RollerWindow(object):
         self.OutputResultLine = QtWidgets.QLineEdit(self.scrollAreaWidgetContents)
         self.OutputResultLine.setObjectName("OutputResultLine")
         self.OutputFormulaLine = QtWidgets.QLineEdit(self.scrollAreaWidgetContents)
-        self.OutputFormulaLine.setObjectName("OutputFormulaLine")
+        self.OutputFormulaLine.setObjectName(f'OutputFormulaLine_{line}')
         read_history = open("roll_history.txt", "r")
         saved_history = read_history.read()
         saved_history = saved_history.split(',')
-
         self.gridLayout_2.addWidget(self.OutputFormulaLine, int(line), 0, 1, 1)
         self.gridLayout_2.addWidget(self.OutputResultLine, int(line), 1, 1, 1)
         self.gridLayout_2.addWidget(self.OutputRerollButton, int(line), 2, 1, 1)
@@ -80,6 +81,11 @@ class RollerWindow(object):
         return
 
     def update_layout(self):
+        for i in range(10):
+            self.create_ten_reroll_positions(i)
+            self.retranslateUi(MainWindow)
+            self.OutputRerollButton.clicked.connect(lambda ch, num=i: self.reroll(num))
+            MainWindow.setCentralWidget(self.centralwidget)
         print('Hello')
 
     def roll_add(self, added_roll, added_result):
@@ -91,12 +97,23 @@ class RollerWindow(object):
         add_history.write(f'{added_result}' f', {added_roll}' f', {saved_history}')
         print(saved_history)
 
-    def roll(self):
-        input = str(self.RollInputLine.text())
+    def roll(self, start_type, line):
+        if start_type == 'roll':
+            input = str(self.RollInputLine.text())
+        else:
+            input = str(line)
         response = input_to_response(input)
         self.roll_add(response[0], response[1])
         self.RollInputLine.setText('4d6+12')
         self.update_layout()
+
+    def reroll(self, num):
+        read_history = open("roll_history.txt", "r")
+        saved_history = read_history.read()
+        saved_history = saved_history.split(',')
+        current_line = str(f'{saved_history[2*num+1]}')
+        self.roll('none',current_line)
+        return current_line
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

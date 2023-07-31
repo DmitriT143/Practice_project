@@ -33,6 +33,8 @@ def input_to_response(line):
                 post_dice_number = pre_dice_number
                 pre_dice_number = 0
             if Flag_operation == 0 and str(to_output[i]) == '+' or Flag_operation == 0 and str(to_output[i]) == '-':
+                if Flag_dice_roll == 0:
+                    next_in_line = int(pre_dice_number)
                 if Flag_dice_roll == 1:
                     next_in_line = initial_roll(post_dice_number, pre_dice_number)
                 pre_dice_number = 0
@@ -50,6 +52,8 @@ def input_to_response(line):
                 if str(to_output[i]) == '+':
                     Prev_function = 1
             if i == len(to_output) - 1:
+                if Flag_dice_roll == 0:
+                    Function_output = int(Function_output) + int(pre_dice_number)
                 if Flag_dice_roll == 1:
                     next_in_line = initial_roll(post_dice_number, pre_dice_number)
                 if Prev_function == 0:
