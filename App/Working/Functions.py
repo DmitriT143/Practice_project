@@ -24,7 +24,6 @@ def input_to_response(line):
                     pre_dice_number = str(to_output[i])
                 else:
                     pre_dice_number = str(pre_dice_number) + str(to_output[i])
-                print(pre_dice_number)
             if Flag_dice_roll == 0 and str(to_output[i]) == 'd':
                 Flag_dice_roll = 1
                 Flag_operation = 1
@@ -75,7 +74,6 @@ def input_to_response(line):
     def prepare_input_line(line):
         FlagOperation = 0
         FlagDice = 0
-        print(line)
         if len(str(line)) < 2:
             return
         length = len(str(line))
@@ -100,7 +98,6 @@ def input_to_response(line):
             else:
                 pass
         line = checked_length
-        print(line)
         return line
 
     #    def rolls_history():
@@ -110,10 +107,16 @@ def input_to_response(line):
     #        print(saved_history)
     #
     def roll_add(added_roll, added_result):
+        last_rolls = []
         read_history = open("roll_history.txt", "r")
         print(added_roll, added_result)
         print(read_history)
         saved_history = read_history.read()
+        Split_history = saved_history.split(',')
+        for i in range(50):
+            last_rolls.append(Split_history[i])
+            print(last_rolls)
+        saved_history = ','.join(last_rolls)
         add_history = open("roll_history.txt", "w")
         add_history.write(f'{added_result}' f', {added_roll}' f', {saved_history}')
         print(saved_history)
