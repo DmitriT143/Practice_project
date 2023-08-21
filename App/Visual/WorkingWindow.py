@@ -53,12 +53,22 @@ class RollerWindow(object):
         self.gridLayout.addWidget(self.scrollArea, 1, 0, 1, 1)
 
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1349, 26))
         self.menubar.setObjectName("menubar")
+        self.menuSettings = QtWidgets.QMenu(self.menubar)
+        self.menuLine = QtWidgets.QMenu(self.menuSettings)
+        self.menuLine.setObjectName("MenuLine")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
+        self.actionAnother_line = QtWidgets.QAction(MainWindow)
+        self.actionAnother_line.setObjectName("actionAnother_line")
         MainWindow.setStatusBar(self.statusbar)
+        self.actionSubLine = QtWidgets.QAction(MainWindow)
+        self.actionSubLine.setObjectName("actionSubLine")
+        self.menuLine.addAction(self.actionSubLine)
+        self.menuSettings.addAction(self.menuLine.menuAction())
+        self.menuSettings.addAction(self.actionAnother_line)
+        self.menubar.addAction(self.menuSettings.menuAction())
 
         for i in range(10):
             self.create_ten_reroll_positions(i)
@@ -130,6 +140,10 @@ class RollerWindow(object):
         self.RollButton.setText(_translate("MainWindow", "Make Roll"))
         self.pushButton.setText(_translate("MainWindow", "ReRoll"))
         self.RollInputLine.setText('4d6+12')
+        self.menuSettings.setTitle(_translate("MainWindow", "Settings"))
+        self.menuLine.setTitle(_translate("MainWindow", "Line"))
+        self.actionAnother_line.setText(_translate("MainWindow", "Another line"))
+        self.actionSubLine.setText(_translate("MainWindow", "SubLine"))
 
 
 app = QtWidgets.QApplication(sys.argv)
