@@ -3,6 +3,17 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from App.Working.Functions import input_to_response
 
 
+try:
+    check_10_pos = open("roll_history.txt", "r").read()
+    if len(check_10_pos) <= 10:
+        open("roll_history.txt", "w").write(
+            '21, 1d20+d4, 7, 1d20+d4, 1d20, 20, 15, 2d20+8, 26, 5d4+13, 24, 6d6+4, 26, 8d6+4, 86, 8d6+52, 131, '
+            '15d12+22, 27, 5d4+13, 22, 4d6+12')
+except FileNotFoundError:
+    open("roll_history.txt", "w").write('21, 1d20+d4, 7, 1d20+d4, 20, 1d20, 15, 2d20+8, 26, 5d4+13, 24, 6d6+4, 26, '
+                                        '8d6+4, 86, 8d6+52, 131, 15d12+22, Pregen_roll_history 5d4+13')
+
+
 class RollerWindow(object):
     def __init__(self):
         super(RollerWindow, self).__init__()
@@ -71,7 +82,7 @@ class RollerWindow(object):
         self.menubar.addAction(self.menuSettings.menuAction())
 
         for i in range(10):
-            self.create_ten_reroll_positions(i)
+            self.create_reroll_positions(i)
             self.OutputRerollButton.clicked.connect(lambda ch, num=i: self.reroll(num))
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -80,16 +91,16 @@ class RollerWindow(object):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def create_ten_reroll_positions(self, line):
+    def create_reroll_positions(self, line):
+        read_history = open("roll_history.txt", "r")
+        saved_history = read_history.read()
+        saved_history = saved_history.split(',')
         self.OutputRerollButton = QtWidgets.QPushButton(self.scrollAreaWidgetContents)
         self.OutputRerollButton.setObjectName(f"OutputRerollButton{line}")
         self.OutputResultLine = QtWidgets.QLineEdit(self.scrollAreaWidgetContents)
         self.OutputResultLine.setObjectName("OutputResultLine")
         self.OutputFormulaLine = QtWidgets.QLineEdit(self.scrollAreaWidgetContents)
         self.OutputFormulaLine.setObjectName(f'OutputFormulaLine_{line}')
-        read_history = open("roll_history.txt", "r")
-        saved_history = read_history.read()
-        saved_history = saved_history.split(',')
         self.gridLayout_2.addWidget(self.OutputFormulaLine, int(line), 0, 1, 1)
         self.gridLayout_2.addWidget(self.OutputResultLine, int(line), 1, 1, 1)
         self.gridLayout_2.addWidget(self.OutputRerollButton, int(line), 2, 1, 1)
@@ -101,7 +112,7 @@ class RollerWindow(object):
 
     def update_layout(self):
         for i in range(10):
-            self.create_ten_reroll_positions(i)
+            self.create_reroll_positions(i)
             self.retranslateUi(MainWindow)
             self.OutputRerollButton.clicked.connect(lambda ch, num=i: self.reroll(num))
             MainWindow.setCentralWidget(self.centralwidget)
